@@ -47,5 +47,5 @@ Format: `extint type` (`C++ equivalent type`) - Description.
 Loads a dynamically linkable library, gets the function pointers to the specified functions and wraps those pointers with some wrapper code.
 
 #### Arguments
-- library: Path to the library. (Usually .dll files on Windows).
-- functions: A map with each key naming which function to exctract. Every key should be mapped to a array with two elements: the return type and another array containing the argument types. 
+- `library`: Path to the library. (Usually .dll files on Windows).
+- `functions`: A map with each key naming which function to exctract. Every key should be mapped to a array with two elements: the return type and another array containing the argument types. 
