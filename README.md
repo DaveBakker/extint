@@ -34,10 +34,29 @@ Because of this, startup time may take longer, but in the long run it is faster.
 
 Format: `extint type` (`C++ equivalent type`) - Description.
 
-* `void` : (`void`) - No value. (Only valid as a return type.)
-* `bool`, `boolean` : (`bool`) - A type with only two value: `true` and `false`. (8 bit)
-* `ptr` : (`void*`) - A memory pointer. Size depends on executing machine. (32-64 bit)
+* `bool, boolean` : (`bool`) - A type with only two values: `true` and `false`. (8 bit)
+* `ptr` : (`void*`) - An unsigned integer big enough to hold a memory pointer on the machine it is running on. (32-64 bit)
 * `int8` : (`char`) - A 8 bit signed integer.
+* `int16` : (`short`) - A 16 bit signed integer.
+* `int32` : (`int`) - A 32 bit signed integer.
+* `int64` : (`long long, __int64`) - A 64 bit signed integer.
+* `uint8` : (`unsigned char`) - A 8 bit unsigned integer.
+* `uint16` : (`unsigned short`) - A 16 bit unsigned integer.
+* `uint32` : (`unsigned int`) - A 32 bit unsigned integer.
+* `uint64` : (`unsigned long long, unsigned __int64`) - A 64 bit unsigned integer.
+* `float32` : (`float`) - A 32 bit IEEE 754 floating point number.
+* `float64` : (`double`) - A 64 bit IEEE 754 floating point number.
+
+The following types can only be used as return types:
+* `void` : (`void`) - No value.
+
+The following types can not be used as return types:
+* `string:narrow` : (`const char*`) - On Windows the string is encoded using the system default Windows ANSI code page, which means that not all characters can be converted. Microsoft advises to not use the narrow version of their API anymore. On platforms other than Windows the string is encoded using UTF-8. 
+* `string:wide` : (`const wchar_t*`) - On Windows the string is encoded using UTF-16. On other machines it is encoded using UTF-32.
+
+### 64 bit integer return types
+
+JavaScript internally stores numbers as 64 bit floating point numbers. Integers longer than 32 bits (`int64`, `uint64` and possibly `ptr`) can't be accurately represented as a floating point number. Therefore, **whenever extint predicts precision may get lost, it returns the integer as a string.** If you need to do some math with these numbers, use a bigint library.
 
 ## Methods
 
@@ -48,4 +67,10 @@ Loads a dynamically linkable library, gets the function pointers to the specifie
 
 #### Arguments
 - `library`: Path to the library. (Usually .dll files on Windows).
-- `functions`: A map with each key naming which function to exctract. Every key should be mapped to a array with two elements: the return type and another array containing the argument types. 
+- `functions`: A map with each key naming which function to extract. Every key should be mapped to a array with two elements: the return type and another array containing the argument types. The maximum number of arguments per function is 32.
+
+#### Example
+    var user32 = extint("User32.dll", {
+        'MessageBoxW': ['int32', ['ptr', 'string:wide', 'string:wide', 'uint32']]
+    });
+
