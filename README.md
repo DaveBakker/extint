@@ -11,7 +11,7 @@ This module is precompiled for Windows so you don't have to go through all the h
 Extint procedure calls are just as fast as their hardcoded versions. Extint comes bundled with a mini-compiler.
 Up on initialization of a library, (`extint.load()`), the procedure calls get compiled dynamically. For example:
 
-    var kernel32 = extint("Kernel32.dll", {
+    var kernel32 = extint.library("Kernel32.dll", {
         'HeapAlloc': ['ptr', ['ptr', 'uint32', 'ptr']]
     });
 
@@ -66,17 +66,17 @@ JavaScript internally stores numbers as 64 bit floating point numbers. Integers 
 
 ## Methods
 
-### `extint.load(library, functions)`
+### `extint.library(path, functions)`
 
 #### Description
 Loads a dynamically linkable library, gets the function pointers to the specified functions and wraps those pointers with some wrapper code.
 
 #### Arguments
-- `library`: Path to the library. (Usually .dll files on Windows).
+- `path`: Path to the library. (Usually .dll files on Windows).
 - `functions`: A map with each key naming which function to extract. Every key should be mapped to a array with two elements: the return type and another array containing the argument types. The maximum number of arguments per function is 32.
 
 #### Example
-    var user32 = extint("User32.dll", {
+    var user32 = extint.library("User32.dll", {
         'MessageBoxW': ['int32', ['ptr', 'string:wide', 'string:wide', 'uint32']]
     });
 
@@ -86,3 +86,9 @@ Loads a dynamically linkable library, gets the function pointers to the specifie
 This module is distributed with the [BSD license](LICENSE.md): you can do whatever you want with it, as long as you keep my name in it.
 
 If you find a bug, please report it on the [Issues](https://github.com/DaveBakker/extint/issues) page.
+
+
+
+# Todo
+
+Things.
