@@ -85,4 +85,4 @@ Loads a dynamically linkable library, gets the function pointers to the specifie
 ## Other information
 This module is distributed with the [BSD license](LICENSE.md): you can do whatever you want with it, as long as you keep my name in it.
 
-If you find a bug, please file them [here](https://github.com/DaveBakker/extint/issues).
+If you find a bug, please report it on the [Issues](https://github.com/DaveBakker/extint/issues) page.
