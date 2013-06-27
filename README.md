@@ -83,4 +83,4 @@ Loads a dynamically linkable library, gets the function pointers to the specifie
 
 
 ## Other information
-This module is distributed with the BSD license: you can do whatever you want with it, as long as you keep my name in it.
+This module is distributed with the [BSD license](/DaveBakker/extint/blob/master/LICENSE.md): you can do whatever you want with it, as long as you keep my name in it.
