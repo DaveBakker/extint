@@ -5,6 +5,8 @@ With this module you no longer have to create C++ wrappers for every library you
 This module is precompiled for Windows so you don't have to go through all the hassle. 
 [Node-ffi](/rbranson/node-ffi) already provides this functionality, but has quite some call overhead.
 
+
+
 ## How
 Extint procedure calls are just as fast as their hardcoded versions. Extint comes bundled with a mini-compiler.
 Up on initialization of a library, (`extint.load()`), the procedure calls get compiled dynamically. For example:
@@ -29,6 +31,8 @@ A function equivalent to the following source code gets compiled on the fly.
     }
     
 Because of this, startup time may take longer, but in the long run it is faster.
+
+
 
 ## Datatypes
 
@@ -58,6 +62,8 @@ The following types can not be used as return types:
 
 JavaScript internally stores numbers as 64 bit floating point numbers. Integers longer than 32 bits (`int64`, `uint64` and possibly `ptr`) can't be accurately represented as a floating point number. Therefore, **whenever extint predicts precision may get lost, it returns the integer as a string.** If you need to do some math with these numbers, use a bigint library.
 
+
+
 ## Methods
 
 ### `extint.load(library, functions)`
@@ -74,3 +80,7 @@ Loads a dynamically linkable library, gets the function pointers to the specifie
         'MessageBoxW': ['int32', ['ptr', 'string:wide', 'string:wide', 'uint32']]
     });
 
+
+
+## Other information
+This module is distributed with the BSD license: you can do whatever you want with it, as long as you keep my name in it.
