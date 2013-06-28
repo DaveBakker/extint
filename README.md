@@ -39,7 +39,7 @@ Because of this, startup time may take longer, but in the long run it is faster.
 Format: `extint type` (`C++ equivalent type`) - Description.
 
 * `bool, boolean` : (`bool`) - A type with only two values: `true` and `false`. (8 bit)
-* `ptr` : (`void*`) - An unsigned integer big enough to hold a memory pointer on the machine it is running on. (32-64 bit)
+* `ptr` : (`void*, size_t`) - An unsigned integer big enough to hold a memory pointer on the machine it is running on. (32-64 bit)
 * `int8` : (`char`) - A 8 bit signed integer.
 * `int16` : (`short`) - A 16 bit signed integer.
 * `int32` : (`int`) - A 32 bit signed integer.
@@ -51,10 +51,10 @@ Format: `extint type` (`C++ equivalent type`) - Description.
 * `float32` : (`float`) - A 32 bit IEEE 754 floating point number.
 * `float64` : (`double`) - A 64 bit IEEE 754 floating point number.
 
-The following types can only be used as return types:
+The following types can only be used as return type:
 * `void` : (`void`) - No value.
 
-The following types can not be used as return types:
+The following types can not be used as return type:
 * `string:narrow` : (`const char*`) - On Windows the string is encoded using the system default Windows ANSI code page, which means that not all characters can be converted. Microsoft advises to not use the narrow version of their API anymore. On platforms other than Windows the string is encoded using UTF-8. 
 * `string:wide` : (`const wchar_t*`) - On Windows the string is encoded using UTF-16. On other machines it is encoded using UTF-32.
 
@@ -79,6 +79,8 @@ Loads a dynamically linkable library, gets the function pointers to the specifie
     var user32 = extint.library("User32.dll", {
         'MessageBoxW': ['int32', ['ptr', 'string:wide', 'string:wide', 'uint32']]
     });
+    
+    user32.MessageBoxW(0, "Message", "Title", 0);
 
 
 
@@ -91,4 +93,44 @@ If you find a bug, please report it on the [Issues](https://github.com/DaveBakke
 
 # Todo
 
-Things.
+**Add support for the following string types:**
+* `string:ascii` - An ASCII encoded string. Regardless of the operating system.
+* `string:utf8` - An UTF-8 encoded string. Regardless of the operating system.
+* `string:utf16` - An UTF-16 encoded string. Regardless of the operating system.
+
+
+**Add support for directly calling functions by their function pointer:**
+
+### `extint.function(functionPtr, signature)`
+
+#### Description
+Wraps a function pointer to make it callable from JavaScript.
+
+#### Arguments
+- `functionPtr`: A number which is to be interpreted as a pointer.
+- `signature`: An array with two elements: the first element coontains a string describing the [return type](#datatypes). The second element contains an array with all the [argument types](#datatypes). The maximum number of arguments is 32.
+
+#### Return value
+Returns a JavaScript function which propagates the function call to the external function.
+
+#### Example
+    var wndProc = extint.function(wndProcPtr, ['ptr', ['ptr', 'uint32', 'uint32', 'ptr']]);
+    
+    wndProc(hwnd, WM_ERASEBKGND, dc, 0);
+
+**Add a 'struct' type:**
+
+### `extint.struct(layout)`
+
+#### Example
+    var Point = extint.struct({
+        'x': 'int32',
+        'y': 'int32'
+    });
+    
+    var myPoint = new Point();
+    myPoint.x = 10;
+    myPoint.y = 55;
+    
+    console.log(myPoint.ptr);
+    
